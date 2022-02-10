@@ -6,6 +6,7 @@
  */
 
 import express from 'express'
+import jwt from 'jsonwebtoken'
 import { MemberAccountController } from '../../../controllers/api/api-controller.js'
 
 export const router = express.Router()
@@ -13,3 +14,30 @@ const memberController = new MemberAccountController()
 
 router.post('/register', (req, res, next) => memberController.registerUser(req, res, next))
 router.post('/login', (req, res, next) => memberController.loginUser(req, res, next))
+
+/**
+ * Authenticates if the user has a valid JWT.
+ *
+ * @param {object} req - Express request object.
+ * @param {object} res - Express response object.
+ * @param {Function} next - Express next middleware function.
+ */
+const authenticateJWT = (req, res, next) => {
+  // ? = no exception if authorization is undefined, if undefined, authorization === undefined
+  const authorization = req.headers.authorization?.split(' ')
+
+  if (authorization?.[0] !== 'Bearer') {
+    console.log('no bearer')
+    return
+  }
+  try {
+    req.jwt = jwt.verify(authorization[1], process.env.ACCESS_TOKEN_SECRET)
+    req.user = {
+      username: req.jwt.username
+    }
+    console.log('jwt: ' + req.jwt.username)
+    next()
+  } catch (error) {
+    console.log(error)
+  }
+}

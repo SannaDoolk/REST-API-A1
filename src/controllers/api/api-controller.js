@@ -6,6 +6,7 @@
  */
 
 import fetch from 'node-fetch'
+import jwt from 'jsonwebtoken'
 import { User } from '../../models/user.js'
 
 /**
@@ -48,7 +49,15 @@ export class MemberAccountController {
       const payload = {
         username: user.username
       }
-      
+      const accessToken = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, {
+        algorithm: 'HS256',
+        expiresIn: '1h'
+      })
+      res
+        .status(200)
+        .json({
+          access_token: accessToken
+        })
     } catch (error) {
       console.log(error)
     }
