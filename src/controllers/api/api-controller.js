@@ -62,4 +62,15 @@ export class MemberAccountController {
       console.log(error)
     }
   }
+
+  test (req, res, next) {
+    try {
+      const message = 'veryfied'
+      res
+      .status(200)
+      .json({ message })
+    } catch (error) {
+      
+    }
+  }
 }

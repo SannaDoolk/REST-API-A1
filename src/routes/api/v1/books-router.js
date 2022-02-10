@@ -8,10 +8,10 @@
 import express from 'express'
 import jwt from 'jsonwebtoken'
 import createHttpError from 'http-errors'
-import { MemberAccountController } from '../../../controllers/api/api-controller.js'
+import { BookController } from '../../../controllers/api/book-controller.js'
 
 export const router = express.Router()
-const memberController = new MemberAccountController()
+const bookController = new BookController()
 
 /**
  * Authenticates if the user has a valid JWT.
@@ -42,6 +42,5 @@ const authenticateJWT = (req, res, next) => {
   }
 }
 
-router.post('/register', (req, res, next) => memberController.registerUser(req, res, next))
-router.post('/login', (req, res, next) => memberController.loginUser(req, res, next))
-router.get('/test', authenticateJWT, (req, res, next) => memberController.test(req, res, next))
+router.get('/', (req, res, next) => bookController.test(req, res, next))
+router.post('/', (req, res, next) => bookController.postNewBook(req, res, next))
