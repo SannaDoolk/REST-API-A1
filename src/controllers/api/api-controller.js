@@ -6,11 +6,12 @@
  */
 
 import fetch from 'node-fetch'
+import { User } from '../../models/user.js'
 
 /**
  * Encapsulates a controller.
  */
-export class ImageController {
+export class MemberAccountController {
   test (req, res, next) {
     try {
       const test = 'hello'
@@ -21,6 +22,7 @@ export class ImageController {
       next(error)
     }
   }
+
   /**
    * Registers a user.
    *
@@ -29,6 +31,17 @@ export class ImageController {
    * @param {Function} next - Express next middleware function.
    */
   async registerUser (req, res, next) {
-    
+    console.log('in register')
+    try {
+      const newUser = await User.saveUser({
+        username: req.body.username,
+        password: req.body.password
+      })
+      res
+        .status(201)
+        .json({ newUser })
+    } catch (error) {
+      console.log(error)
+    }
   }
 }

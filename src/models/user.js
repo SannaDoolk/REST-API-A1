@@ -28,4 +28,15 @@ schema.pre('save', async function () {
   console.log('hashed')
 })
 
+/**
+ * Saves a user to the database.
+ *
+ * @param {string} userData - The user to save.
+ * @returns {Promise<User>} The Promise to be fulfilled.
+ */
+schema.statics.saveUser = async function (userData) {
+  const user = new User(userData)
+  return user.save()
+}
+
 export const User = mongoose.model('User', schema)
