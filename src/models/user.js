@@ -39,4 +39,19 @@ schema.statics.saveUser = async function (userData) {
   return user.save()
 }
 
+/**
+ * Checks if a user exists and if password matches the saved hashed password.
+ *
+ * @param {string} username - The username.
+ * @param {string} password - The password.
+ * @returns {object} - The user.
+ */
+schema.statics.authenticate = async function (username, password) {
+  const user = await this.findOne({ username })
+  if (!user || !(await bcrypt.compare(password, user.password))) {
+    throw new Error('Invalid login attempt')
+  }
+  return user
+}
+
 export const User = mongoose.model('User', schema)

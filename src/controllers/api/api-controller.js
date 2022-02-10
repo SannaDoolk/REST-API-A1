@@ -12,17 +12,6 @@ import { User } from '../../models/user.js'
  * Encapsulates a controller.
  */
 export class MemberAccountController {
-  test (req, res, next) {
-    try {
-      const test = 'hello'
-      res
-        .status(201)
-        .json({ test })
-    } catch (error) {
-      next(error)
-    }
-  }
-
   /**
    * Registers a user.
    *
@@ -37,9 +26,29 @@ export class MemberAccountController {
         username: req.body.username,
         password: req.body.password
       })
+
       res
         .status(201)
         .json({ newUser })
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  /**
+   * Logs in a user.
+   *
+   * @param {object} req - Express request object.
+   * @param {object} res - Express response object.
+   * @param {Function} next - Express next middleware function.
+   */
+  async loginUser (req, res, next) {
+    try {
+      const user = await User.authenticate(req.body.username, req.body.password)
+      const payload = {
+        username: user.username
+      }
+      
     } catch (error) {
       console.log(error)
     }
