@@ -13,6 +13,7 @@ import { MemberAccountController } from '../../../controllers/api/api-controller
 export const router = express.Router()
 const memberController = new MemberAccountController()
 
+// BEHÖVS EJ HÄR ----------------------------------
 /**
  * Authenticates if the user has a valid JWT.
  *
@@ -44,4 +45,4 @@ const authenticateJWT = (req, res, next) => {
 
 router.post('/register', (req, res, next) => memberController.registerUser(req, res, next))
 router.post('/login', (req, res, next) => memberController.loginUser(req, res, next))
-router.get('/test', authenticateJWT, (req, res, next) => memberController.test(req, res, next))
+router.get('/test', authenticateJWT, (req, res, next) => memberController.test(req, res, next)) // TA BORT ---------------------------

@@ -20,9 +20,31 @@ const schema = new mongoose.Schema({
     type: String,
     required: true
   },
+  genre: {
+    type: String,
+    required: true
+  },
   createdAt: { type: String },
   updatedAt: { type: String },
   owner: { type: String }
+}, {
+  timestamps: true,
+  toJSON: {
+  /**
+   * Performs a transformation of the resulting object to remove sensitive information.
+   *
+   * @param {object} doc - The mongoose document which is being converted.
+   * @param {object} ret - The plain object representation which has been converted.
+   */
+    transform: function (doc, ret) {
+      delete ret._id
+    },
+    virtuals: true
+  }
 })
 
-export const User = mongoose.model('Book', schema)
+schema.virtual('id').get(function () {
+  return this._id.toHexString()
+})
+
+export const Book = mongoose.model('Book', schema)
