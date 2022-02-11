@@ -5,9 +5,9 @@
  * @version 1.0.0
  */
 
-import fetch from 'node-fetch'
 import jwt from 'jsonwebtoken'
 import { User } from '../../models/user.js'
+import createHttpError from 'http-errors'
 
 /**
  * Encapsulates a controller.
@@ -21,7 +21,6 @@ export class MemberAccountController {
    * @param {Function} next - Express next middleware function.
    */
   async registerUser (req, res, next) {
-    console.log('in register')
     try {
       const newUser = await User.saveUser({
         username: req.body.username,
@@ -32,7 +31,15 @@ export class MemberAccountController {
         .status(201)
         .json({ newUser })
     } catch (error) {
-      console.log(error)
+      let err = error
+      if (error.code === 11000) {
+        err = createHttpError(409)
+        err.innerException = error
+      } else if (error.name === 'ValidationError') {
+        err = createHttpError(400)
+        err.innerException = error
+      }
+      next(err)
     }
   }
 
@@ -59,7 +66,9 @@ export class MemberAccountController {
           access_token: accessToken
         })
     } catch (error) {
-      console.log(error)
+      const err = createHttpError(401)
+      err.innerException = error
+      next(err)
     }
   }
 

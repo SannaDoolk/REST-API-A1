@@ -5,9 +5,6 @@
  * @version 1.0.0
  */
 
-import fetch from 'node-fetch'
-import jwt from 'jsonwebtoken'
-import { User } from '../../models/user.js'
 import { Book } from '../../models/book.js'
 import createHttpError from 'http-errors'
 
@@ -71,7 +68,7 @@ export class BookController {
         .status(201)
         .json(allBooks)
     } catch (error) {
-
+      next(error)
     }
   }
 
@@ -94,7 +91,12 @@ export class BookController {
         .status(201)
         .json(newBook)
     } catch (error) {
-      console.log(error)
+      let err = error
+      if (error.name === 'ValidationError') {
+        err = createHttpError(400)
+        err.innerException = error
+      }
+      next(err)
     }
   }
 
@@ -117,7 +119,12 @@ export class BookController {
         .status(204)
         .end()
     } catch (error) {
-
+      let err = error
+      if (error.name === 'ValidationError') {
+        err = createHttpError(400)
+        err.innerException = error
+      }
+      next(err)
     }
   }
 
@@ -135,7 +142,7 @@ export class BookController {
         .status(204)
         .end()
     } catch (error) {
-
+      next(error)
     }
   }
 }
