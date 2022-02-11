@@ -90,4 +90,13 @@ schema.methods.putUpdate = async function (bookData) {
   return this.save()
 }
 
+/**
+ * Deletes a book.
+ *
+ * @returns {Promise<Book[]>} The Promise to be fulfilled.
+ */
+schema.methods.delete = async function () {
+  return this.remove()
+}
+
 export const Book = mongoose.model('Book', schema)

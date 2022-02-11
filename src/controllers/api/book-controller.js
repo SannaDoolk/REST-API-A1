@@ -99,7 +99,7 @@ export class BookController {
   }
 
   /**
-   * Update a bok completely.
+   * Update a book completely.
    *
    * @param {object} req - Express request object.
    * @param {object} res - Express response object.
@@ -113,6 +113,24 @@ export class BookController {
         description: req.body.description,
         genre: req.body.genre
       })
+      res
+        .status(204)
+        .end()
+    } catch (error) {
+
+    }
+  }
+
+  /**
+   * Delete a book.
+   *
+   * @param {object} req - Express request object.
+   * @param {object} res - Express response object.
+   * @param {Function} next - Express next middleware function.
+   */
+  async deleteBook (req, res, next) {
+    try {
+      req.book.delete()
       res
         .status(204)
         .end()
