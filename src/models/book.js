@@ -72,4 +72,22 @@ schema.statics.add = async function (newBook) {
   return book.save()
 }
 
+/**
+ * Updates all.
+ *
+ * @param {object} bookData - the full data.
+ * @param {string} bookData.title - the url.
+ * @param {string} bookData.author - the author.
+ * @param {string} bookData.description - the description.
+ * @param {string} bookData.genre - the genre.
+ * @returns {Promise<Book[]>} The Promise to be fulfilled.
+ */
+schema.methods.putUpdate = async function (bookData) {
+  this.title = bookData.title
+  this.author = bookData.author
+  this.description = bookData.description
+  this.genre = bookData.genre
+  return this.save()
+}
+
 export const Book = mongoose.model('Book', schema)

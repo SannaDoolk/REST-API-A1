@@ -97,4 +97,27 @@ export class BookController {
       console.log(error)
     }
   }
+
+  /**
+   * Update a bok completely.
+   *
+   * @param {object} req - Express request object.
+   * @param {object} res - Express response object.
+   * @param {Function} next - Express next middleware function.
+   */
+  async putUpdateOnBook (req, res, next) {
+    try {
+      await req.book.putUpdate({
+        title: req.body.title,
+        author: req.body.author,
+        description: req.body.description,
+        genre: req.body.genre
+      })
+      res
+        .status(204)
+        .end()
+    } catch (error) {
+
+    }
+  }
 }

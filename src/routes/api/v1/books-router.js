@@ -46,3 +46,4 @@ router.param('id', (req, res, next, id) => bookController.loadBookOnReqObj(req, 
 router.get('/', (req, res, next) => bookController.getAllBooks(req, res, next))
 router.post('/', (req, res, next) => bookController.postNewBook(req, res, next))
 router.get('/:id', (req, res, next) => bookController.getBookById(req, res, next))
+router.put('/:id', (req, res, next) => bookController.putUpdateOnBook(req, res, next))
