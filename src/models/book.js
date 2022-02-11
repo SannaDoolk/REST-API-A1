@@ -8,7 +8,7 @@
 import mongoose from 'mongoose'
 
 const schema = new mongoose.Schema({
-  titel: {
+  title: {
     type: String,
     required: true
   },
@@ -46,5 +46,30 @@ const schema = new mongoose.Schema({
 schema.virtual('id').get(function () {
   return this._id.toHexString()
 })
+
+/**
+ * Gets a Book by id.
+ *
+ * @param {string} id - The value of the id for the book to get.
+ * @returns {Promise<Book[]>} The Promise to be fulfilled.
+ */
+schema.statics.getById = async function (id) {
+  console.log(id)
+  return this.findOne({ _id: id })
+}
+
+/**
+ * Adds a new book.
+ *
+ * @param {object} newBook - the Book.
+ * @param {string} newBook.title - the title.
+ * @param {string} newBook.description - the description.
+ * @param {string} newBook.author - the author.
+ * @returns {Promise<Book[]>} The Promise to be fulfilled.
+ */
+schema.statics.add = async function (newBook) {
+  const book = new Book(newBook)
+  return book.save()
+}
 
 export const Book = mongoose.model('Book', schema)

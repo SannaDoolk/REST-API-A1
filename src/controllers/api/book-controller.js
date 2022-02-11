@@ -14,26 +14,49 @@ import { Book } from '../../models/book.js'
  * Encapsulates a controller.
  */
 export class BookController {
-  test (req, res, next) {
+  /**
+   * Get all boks.
+   *
+   * @param {object} req - Express request object.
+   * @param {object} res - Express response object.
+   * @param {Function} next - Express next middleware function.
+   */
+  async getAllBooks (req, res, next) {
     try {
-      const message = 'In books'
+      const allBooks = {
+        books: (await Book.find({})).map(book => ({
+          title: book.title,
+          author: book.author,
+          description: book.description,
+          genre: book.genre
+        }))
+      }
       res
-      .status(200)
-      .json({ message })
+        .status(201)
+        .json(allBooks)
     } catch (error) {
-      
+
     }
   }
 
+  /**
+   * Posts a new book.
+   *
+   * @param {object} req - Express request object.
+   * @param {object} res - Express response object.
+   * @param {Function} next - Express next middleware function.
+   */
   async postNewBook (req, res, next) {
     try {
-      const newBook = new Book({
+      const newBook = await Book.add({
         title: req.body.title,
         author: req.body.author,
         description: req.body.description,
         genre: req.body.genre
       })
-      console.log(newBook)
+      res
+        .status(201)
+        .json(newBook)
     } catch (error) {
       console.log(error)
     }

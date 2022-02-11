@@ -42,5 +42,5 @@ const authenticateJWT = (req, res, next) => {
   }
 }
 
-router.get('/', (req, res, next) => bookController.test(req, res, next))
+router.get('/', (req, res, next) => bookController.getAllBooks(req, res, next))
 router.post('/', (req, res, next) => bookController.postNewBook(req, res, next))
