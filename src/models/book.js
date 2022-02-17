@@ -47,6 +47,10 @@ schema.virtual('id').get(function () {
   return this._id.toHexString()
 })
 
+schema.pre('save', async function () {
+  this.genre = this.genre.charAt(0).toUpperCase() + this.genre.slice(1)
+})
+
 /**
  * Gets a Book by id.
  *

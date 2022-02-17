@@ -7,10 +7,10 @@
 
 import express from 'express'
 import { router as memberAccountRouter } from './account-router.js'
-import { router as booksRouter } from './books-router.js'
+import { router as libraryRouter } from './library-router.js'
 
 export const router = express.Router()
 
 router.get('/', (req, res) => res.json({ message: 'Hello world!' }))
-router.use('/', memberAccountRouter)
-router.use('/books', booksRouter)
+router.use('/user', memberAccountRouter)
+router.use('/library', libraryRouter)

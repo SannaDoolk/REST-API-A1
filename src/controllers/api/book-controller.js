@@ -22,6 +22,7 @@ export class BookController {
    */
   async loadBookOnReqObj (req, res, next, id) {
     try {
+      console.log(req.params)
       const book = await Book.getById(id)
 
       if (!book) {
@@ -61,6 +62,7 @@ export class BookController {
           author: book.author,
           description: book.description,
           genre: book.genre,
+          owner: book.owner,
           id: book.id // -------------EV använda annat ID----------
         }))
       }
@@ -85,7 +87,8 @@ export class BookController {
         title: req.body.title,
         author: req.body.author,
         description: req.body.description,
-        genre: req.body.genre
+        genre: req.body.genre,
+        owner: req.body.owner
       })
       res
         .status(201)
@@ -144,5 +147,52 @@ export class BookController {
     } catch (error) {
       next(error)
     }
+  }
+
+  async getBooksByGenre (req, res, next) {
+    try {
+      console.log(req.params)
+      let search = req.params.search
+      search = search.charAt(0).toUpperCase() + search.slice(1)
+      const allBooksByGenre = {
+        books: (await Book.find({ genre: search })).map(book => ({
+          title: book.title,
+          author: book.author,
+          description: book.description,
+          genre: book.genre,
+          id: book.id // -------------EV använda annat ID----------
+        }))
+      }
+      res
+        .status(201)
+        .json(allBooksByGenre)
+    } catch (error) {
+
+    }
+  }
+
+  /*async getBooksByAuthor (req, res, next) {
+    try {
+      console.log(req.params.author)
+      const allBooksByGenre = {
+        books: (await Book.find({ author: '/^' + req.params.search + '$/i' })).map(book => ({
+          title: book.title,
+          author: book.author,
+          description: book.description,
+          genre: book.genre,
+          id: book.id // -------------EV använda annat ID----------
+        }))
+      }
+      res
+        .status(201)
+        .json(allBooksByGenre)
+    } catch (error) {
+
+    }
+  }*/
+
+  test (req, res, next) {
+    console.log('test')
+    console.log(req.params.title)
   }
 }
