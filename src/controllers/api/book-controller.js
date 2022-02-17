@@ -88,7 +88,7 @@ export class BookController {
         author: req.body.author,
         description: req.body.description,
         genre: req.body.genre,
-        owner: req.body.owner
+        owner: req.user.username
       })
       res
         .status(201)
