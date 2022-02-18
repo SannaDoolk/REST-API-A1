@@ -16,10 +16,6 @@ router.use('/user', memberAccountRouter)
 
 
 
-
-
-
-
 //router.param('id', (req, res, next, id) => bookController.loadBookOnReqObj(req, res, next, id))
 
 //router.get('/books', (req, res, next) => bookController.getAllBooks(req, res, next))

@@ -26,7 +26,7 @@ const schema = new mongoose.Schema({
   },
   createdAt: { type: String },
   updatedAt: { type: String },
-  owner: { type: String }
+  uploader: { type: String }
 }, {
   timestamps: true,
   toJSON: {

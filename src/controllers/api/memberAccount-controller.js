@@ -9,6 +9,7 @@ import jwt from 'jsonwebtoken'
 import { User } from '../../models/user.js'
 import createHttpError from 'http-errors'
 import { Subscriber } from '../../models/subscriber.js'
+import { Book } from '../../models/book.js'
 
 /**
  * Encapsulates a controller.
@@ -30,7 +31,6 @@ export class MemberAccountController {
 
       res
         .status(201)
-        .json({ newUser })
     } catch (error) {
       let err = error
       if (error.code === 11000) {
@@ -70,6 +70,68 @@ export class MemberAccountController {
       const err = createHttpError(401)
       err.innerException = error
       next(err)
+    }
+  }
+
+  /**
+   * Finds a user by their username.
+   *
+   * @param {object} req - Express request object.
+   * @param {object} res - Express response object.
+   * @param {Function} next - Express next middleware function.
+   */
+  async getUserByUsername (req, res, next) {
+    try {
+      const usernameSearch = req.params.username
+      const nrOfBooksUploaded = await Book.countDocuments({ uploader: usernameSearch })
+      const user = await User.findOne({ username: usernameSearch })
+      const userData = {
+        username: user.username,
+        numberOfUploads: nrOfBooksUploaded
+      }
+      const result = {
+        _links: {
+          self: { href: process.env.API_URL + '/user/' + usernameSearch },
+          uploads: { href: process.env.API_URL + '/user/' + usernameSearch + '/uploaded-books' }
+        },
+        user: userData
+      }
+      res
+        .json(result)
+        .status(200)
+    } catch (error) {
+
+    }
+  }
+
+  async getUsersUploadedBooks (req, res, next) {
+    try {
+      const username = req.params.username
+      const count = await Book.countDocuments({ uploader: username })
+      console.log(count)
+      const booksFromUser = {
+        books: (await Book.find({ uploader: username })).map(book => ({
+          title: book.title,
+          author: book.author,
+          id: book.id
+        }))
+      }
+
+      const result = {
+        _links: {
+          self: { href: process.env.API_URL + '/user/' + username + '/uploaded-books' },
+          book: { href: process.env.API_URL + '/books/book/:id' },
+          uploader: { href: process.env.API_URL + '/user/sanna3' },
+          all: { href: process.env.API_URL + '/books' }
+        },
+        books: booksFromUser
+      }
+
+      res
+        .json(result)
+        .status(200)
+    } catch (error) {
+
     }
   }
 

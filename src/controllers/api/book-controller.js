@@ -44,7 +44,15 @@ export class BookController {
    * @param {Function} next - Express next middleware function.
    */
   async getBookById (req, res, next) {
-    res.json(req.book)
+    const result = {
+      _links: {
+        self: { href: process.env.API_URL + '/books/book/:id' },
+        uploader: { href: process.env.API_URL + '/books/book/:id' },
+        all: { href: process.env.API_URL + '/books' }
+      },
+      book: req.book
+    }
+    res.json(result)
   }
 
   /**
@@ -66,7 +74,7 @@ export class BookController {
           author: book.author,
           description: book.description,
           genre: book.genre,
-          owner: book.owner,
+          uploader: book.uploader,
           id: book.id // -------------EV använda annat ID----------
         }))
       }
@@ -92,7 +100,7 @@ export class BookController {
         author: req.body.author,
         description: req.body.description,
         genre: req.body.genre,
-        owner: req.user.username
+        uploader: req.user.username
       })
       res
         .status(201)
