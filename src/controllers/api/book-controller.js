@@ -56,7 +56,11 @@ export class BookController {
    */
   async getAllBooks (req, res, next) {
     try {
-      const allBooks = {
+      const result = {
+        _links: {
+          self: { href: process.env.API_URL + '/books' },
+          specific: { href: process.env.API_URL + '/books/book/:id' }
+        },
         books: (await Book.find({})).map(book => ({
           title: book.title,
           author: book.author,
@@ -68,7 +72,7 @@ export class BookController {
       }
       res
         .status(201)
-        .json(allBooks)
+        .json(result)
     } catch (error) {
       next(error)
     }
@@ -151,7 +155,10 @@ export class BookController {
 
   async getBooksByGenre (req, res, next) {
     try {
-      console.log(req.params)
+      console.log('query')
+      console.log(req.query.search)
+      console.log(req.query.id)
+
       let search = req.params.search
       search = search.charAt(0).toUpperCase() + search.slice(1)
       const allBooksByGenre = {
