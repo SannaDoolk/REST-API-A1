@@ -104,6 +104,13 @@ export class MemberAccountController {
     }
   }
 
+  /**
+   * Gets all uploaded books by a user.
+   *
+   * @param {object} req - Express request object.
+   * @param {object} res - Express response object.
+   * @param {Function} next - Express next middleware function.
+   */
   async getUsersUploadedBooks (req, res, next) {
     try {
       const username = req.params.username
@@ -139,7 +146,8 @@ export class MemberAccountController {
     console.log(req.params.username)
     try {
       const newSubscriber = await Subscriber.saveSubscriber({
-        subscriberName: req.params.username
+        url: req.params.url,
+        secret: req.params.secret
       })
 
       res
@@ -162,17 +170,6 @@ export class MemberAccountController {
         .json(allSubs)
     } catch (error) {
       next(error)
-    }
-  }
-
-  test (req, res, next) {
-    try {
-      const message = 'veryfied'
-      res
-      .status(200)
-      .json({ message })
-    } catch (error) {
-      
     }
   }
 }

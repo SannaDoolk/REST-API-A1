@@ -165,12 +165,15 @@ export class BookController {
     }
   }
 
+  /**
+   * Gets all books by specific genre.
+   *
+   * @param {object} req - Express request object.
+   * @param {object} res - Express response object.
+   * @param {Function} next - Express next middleware function.
+   */
   async getBooksByGenre (req, res, next) {
     try {
-      console.log('query')
-      console.log(req.query.search)
-      console.log(req.query.id)
-
       let search = req.params.search
       search = search.charAt(0).toUpperCase() + search.slice(1)
       const allBooksByGenre = {
@@ -186,32 +189,7 @@ export class BookController {
         .status(201)
         .json(allBooksByGenre)
     } catch (error) {
-
+      next(error)
     }
-  }
-
-  /*async getBooksByAuthor (req, res, next) {
-    try {
-      console.log(req.params.author)
-      const allBooksByGenre = {
-        books: (await Book.find({ author: '/^' + req.params.search + '$/i' })).map(book => ({
-          title: book.title,
-          author: book.author,
-          description: book.description,
-          genre: book.genre,
-          id: book.id // -------------EV använda annat ID----------
-        }))
-      }
-      res
-        .status(201)
-        .json(allBooksByGenre)
-    } catch (error) {
-
-    }
-  }*/
-
-  test (req, res, next) {
-    console.log('test')
-    console.log(req.params.title)
   }
 }

@@ -17,7 +17,7 @@ router.get('/:username', (req, res, next) => memberController.getUserByUsername(
 router.get('/:username/uploaded-books', (req, res, next) => memberController.getUsersUploadedBooks(req, res, next))
 
 
+//router.post('/subscribe/:username', (req, res, next) => memberController.subscribeForNewBooks(req, res, next))
 
-router.post('/subscribe/:username', (req, res, next) => memberController.subscribeForNewBooks(req, res, next))
-router.get('/messages', (req, res, next) => memberController.getUserMessages(req, res, next))
+// TEST ----------------------------------
 router.get('/subscribers', (req, res, next) => memberController.getAllSubs(req, res, next))

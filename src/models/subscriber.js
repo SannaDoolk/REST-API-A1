@@ -8,7 +8,13 @@
 import mongoose from 'mongoose'
 
 const schema = new mongoose.Schema({
-  subscriberName: {
+  url: {
+    type: String,
+    required: true,
+    lowercase: true,
+    trim: true
+  },
+  secret: {
     type: String,
     required: true,
     lowercase: true,

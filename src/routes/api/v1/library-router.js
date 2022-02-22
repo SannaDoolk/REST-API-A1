@@ -8,6 +8,7 @@
 import express from 'express'
 import { router as bookRouter } from './books-router.js'
 import { router as memberAccountRouter } from './account-router.js'
+import { router as webhookRouter } from './webhook-router.js'
 
 export const router = express.Router()
 
@@ -21,3 +22,4 @@ router.get('/', (req, res) => res.json({
 }))
 router.use('/books', bookRouter)
 router.use('/user', memberAccountRouter)
+router.use('/subscribe', webhookRouter)
