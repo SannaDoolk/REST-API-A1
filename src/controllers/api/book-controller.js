@@ -7,6 +7,8 @@
 
 import { Book } from '../../models/book.js'
 import createHttpError from 'http-errors'
+import fetch from 'node-fetch'
+import { Subscriber } from '../../models/subscriber.js'
 
 /**
  * Encapsulates a controller.
@@ -106,6 +108,7 @@ export class BookController {
         genre: req.body.genre,
         uploader: req.user.username
       })
+      this.sendWebHookToSubscribers(newBook)
       res
         .status(201)
         .json(newBook)
@@ -116,6 +119,50 @@ export class BookController {
         err.innerException = error
       }
       next(err)
+    }
+  }
+
+  /**
+   * Sends a webhook to all subscribers.
+   *
+   * @param {object} bookPosted - The book posted.
+   */
+  async sendWebHookToSubscribers (bookPosted) {
+    try {
+      const dataToSend = {
+        book: bookPosted.title,
+        author: bookPosted.author,
+        description: bookPosted.description,
+        genre: bookPosted.genre
+      }
+      const subscribers = await Subscriber.find({})
+      subscribers.forEach(subscriber => {
+        this.makePostToSubscriber(subscriber.url, subscriber.secret, dataToSend)
+      })
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  /**
+   * Makes POST request to subscriber.
+   *
+   * @param {string} url - The url to send post to.
+   * @param {string} secret - The secret to send as private token.
+   * @param {object} dataToSend - The data to post.
+   */
+  async makePostToSubscriber (url, secret, dataToSend) {
+    try {
+      await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-type': 'application/json',
+          'PRIVATE-TOKEN': secret
+        },
+        body: JSON.stringify(dataToSend)
+      })
+    } catch (error) {
+      console.log(error)
     }
   }
 

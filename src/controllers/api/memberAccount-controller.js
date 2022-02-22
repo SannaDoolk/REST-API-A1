@@ -8,7 +8,6 @@
 import jwt from 'jsonwebtoken'
 import { User } from '../../models/user.js'
 import createHttpError from 'http-errors'
-import { Subscriber } from '../../models/subscriber.js'
 import { Book } from '../../models/book.js'
 
 /**
@@ -139,37 +138,6 @@ export class MemberAccountController {
         .status(200)
     } catch (error) {
 
-    }
-  }
-
-  async subscribeForNewBooks (req, res, next) {
-    console.log(req.params.username)
-    try {
-      const newSubscriber = await Subscriber.saveSubscriber({
-        url: req.params.url,
-        secret: req.params.secret
-      })
-
-      res
-        .status(201)
-        .json({ newSubscriber })
-    } catch (error) {
-
-    }
-  }
-
-  async getAllSubs(req, res, next) {
-    try {
-      const allSubs = {
-        subs: (await Subscriber.find({})).map(subscriber => ({
-          sub: subscriber.subscriberName
-        }))
-      }
-      res
-        .status(201)
-        .json(allSubs)
-    } catch (error) {
-      next(error)
     }
   }
 }
