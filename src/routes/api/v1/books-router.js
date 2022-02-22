@@ -56,6 +56,4 @@ router.put('/book/:id', (req, res, next) => bookController.putUpdateOnBook(req, 
 // VERIFY
 router.delete('/book/:id', (req, res, next) => bookController.deleteBook(req, res, next))
 
-//router.get('/genre/:search', (req, res, next) => bookController.getBooksByGenre(req, res, next))
-
-router.get('/genre', (req, res, next) => bookController.getBooksByGenre(req, res, next))
+router.get('/genre/:search', (req, res, next) => bookController.getBooksByGenre(req, res, next))

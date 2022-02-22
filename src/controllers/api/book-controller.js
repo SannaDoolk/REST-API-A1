@@ -47,7 +47,7 @@ export class BookController {
     const result = {
       _links: {
         self: { href: process.env.API_URL + '/books/book/:id' },
-        uploader: { href: process.env.API_URL + '/books/book/:id' },
+        uploader: { href: process.env.API_URL + '/users/' + req.book.uploader },
         all: { href: process.env.API_URL + '/books' }
       },
       book: req.book
@@ -67,7 +67,11 @@ export class BookController {
       const result = {
         _links: {
           self: { href: process.env.API_URL + '/books' },
-          specific: { href: process.env.API_URL + '/books/book/:id' }
+          specific: { href: process.env.API_URL + '/books/book/:id' },
+          post: { href: process.env.API_URL + '/books/book' },
+          put: { href: process.env.API_URL + '/books/book/:id' },
+          delete: { href: process.env.API_URL + '/books/book/:id' },
+          genre: { href: process.env.API_URL + '/genre/:search' }
         },
         books: (await Book.find({})).map(book => ({
           title: book.title,
