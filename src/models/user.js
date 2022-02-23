@@ -49,6 +49,7 @@ schema.statics.saveUser = async function (userData) {
 schema.statics.authenticate = async function (username, password) {
   const user = await this.findOne({ username })
   if (!user || !(await bcrypt.compare(password, user.password))) {
+    console.log('wrong credentials')
     throw new Error('Invalid login attempt')
   }
   return user

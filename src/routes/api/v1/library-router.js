@@ -7,7 +7,7 @@
 
 import express from 'express'
 import { router as bookRouter } from './books-router.js'
-import { router as memberAccountRouter } from './account-router.js'
+import { router as memberAccountRouter } from './user-router.js'
 import { router as webhookRouter } from './webhook-router.js'
 
 export const router = express.Router()

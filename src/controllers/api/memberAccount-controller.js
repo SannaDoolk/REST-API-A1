@@ -30,6 +30,7 @@ export class MemberAccountController {
 
       res
         .status(201)
+        .json(newUser.username)
     } catch (error) {
       let err = error
       if (error.code === 11000) {
@@ -84,6 +85,10 @@ export class MemberAccountController {
       const usernameSearch = req.params.username
       const nrOfBooksUploaded = await Book.countDocuments({ uploader: usernameSearch })
       const user = await User.findOne({ username: usernameSearch })
+      if (!user) {
+        next(createHttpError(404))
+        return
+      }
       const userData = {
         username: user.username,
         numberOfUploads: nrOfBooksUploaded
@@ -99,7 +104,7 @@ export class MemberAccountController {
         .json(result)
         .status(200)
     } catch (error) {
-
+      next(error)
     }
   }
 
@@ -113,10 +118,14 @@ export class MemberAccountController {
   async getUsersUploadedBooks (req, res, next) {
     try {
       const username = req.params.username
-      const count = await Book.countDocuments({ uploader: username })
-      console.log(count)
+      // const count = await Book.countDocuments({ uploader: username })
+      const user = await User.findOne({ username: username })
+      if (!user) {
+        next(createHttpError(404))
+        return
+      }
       const booksFromUser = {
-        books: (await Book.find({ uploader: username })).map(book => ({
+        books: (await Book.find({ uploader: user.username })).map(book => ({
           title: book.title,
           author: book.author,
           id: book.id
@@ -137,7 +146,7 @@ export class MemberAccountController {
         .json(result)
         .status(200)
     } catch (error) {
-
+      next(error)
     }
   }
 }

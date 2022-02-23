@@ -12,7 +12,13 @@ import createHttpError from 'http-errors'
  * Encapsulates a controller.
  */
 export class HookController {
-
+  /**
+   * Let user subscribes for webhook.
+   *
+   * @param {object} req - Express request object.
+   * @param {object} res - Express response object.
+   * @param {Function} next - Express next middleware function.
+   */
   async subscribeForNewBooks (req, res, next) {
     try {
       const newSubscriber = await Subscriber.saveSubscriber({
@@ -35,6 +41,7 @@ export class HookController {
     }
   }
 
+  // TEST -------------------------
   async getAllSubs(req, res, next) {
     try {
       const allSubs = {
@@ -51,18 +58,9 @@ export class HookController {
     }
   }
 
+    // TEST -------------------------
   async delete (req, res, next) {
     await Subscriber.deleteOne({ _id: req.params.id })
   }
 
-  async test (req, res, next) {
-    console.log(req.body)
-    console.log(req.headers)
-    console.log(req.headers['private-token'])
-    if (req.headers['private-token'] === '12345678900') {
-      console.log('true')
-    } else {
-      console.log('false')
-    }
-  }
 }

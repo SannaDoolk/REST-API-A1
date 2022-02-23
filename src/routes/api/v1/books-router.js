@@ -34,7 +34,6 @@ const authenticateJWT = (req, res, next) => {
     req.user = {
       username: req.jwt.username
     }
-    console.log('jwt: ' + req.jwt.username)
     next()
   } catch (error) {
     console.log(error)
@@ -52,8 +51,8 @@ router.post('/book', authenticateJWT, (req, res, next) => bookController.postNew
 router.get('/book/:id', (req, res, next) => bookController.getBookById(req, res, next))
 
 // VERIFY
-router.put('/book/:id', (req, res, next) => bookController.putUpdateOnBook(req, res, next))
+router.put('/book/:id', authenticateJWT, (req, res, next) => bookController.putUpdateOnBook(req, res, next))
 // VERIFY
-router.delete('/book/:id', (req, res, next) => bookController.deleteBook(req, res, next))
+router.delete('/book/:id', authenticateJWT, (req, res, next) => bookController.deleteBook(req, res, next))
 
 router.get('/genre/:search', (req, res, next) => bookController.getBooksByGenre(req, res, next))

@@ -85,7 +85,7 @@ export class BookController {
         }))
       }
       res
-        .status(201)
+        .status(200)
         .json(result)
     } catch (error) {
       next(error)
@@ -233,7 +233,7 @@ export class BookController {
         }))
       }
       res
-        .status(201)
+        .status(200)
         .json(allBooksByGenre)
     } catch (error) {
       next(error)
