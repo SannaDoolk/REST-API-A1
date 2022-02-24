@@ -48,11 +48,18 @@ export class BookController {
   async getBookById (req, res, next) {
     const result = {
       _links: {
-        self: { href: process.env.API_URL + '/books/book/:id' },
+        self: { href: process.env.API_URL + '/books/book/' + req.book.id },
         uploader: { href: process.env.API_URL + '/users/' + req.book.uploader },
         all: { href: process.env.API_URL + '/books' }
       },
-      book: req.book
+      book: {
+        title: req.book.title,
+        author: req.book.author,
+        genre: req.book.genre,
+        description: req.book.description,
+        uploader: req.book.uploader,
+        id: req.book._id
+      }
     }
     res.json(result)
   }
@@ -69,11 +76,11 @@ export class BookController {
       const result = {
         _links: {
           self: { href: process.env.API_URL + '/books' },
-          specific: { href: process.env.API_URL + '/books/book/:id' },
+          specific: { href: process.env.API_URL + '/books/book/{id}' },
           post: { href: process.env.API_URL + '/books/book' },
-          put: { href: process.env.API_URL + '/books/book/:id' },
-          delete: { href: process.env.API_URL + '/books/book/:id' },
-          genre: { href: process.env.API_URL + '/genre/:search' }
+          put: { href: process.env.API_URL + '/books/book/{id}' },
+          delete: { href: process.env.API_URL + '/books/book/:{id}' },
+          genre: { href: process.env.API_URL + '/genre/{search}' }
         },
         books: (await Book.find({})).map(book => ({
           title: book.title,
@@ -106,8 +113,10 @@ export class BookController {
         author: req.body.author,
         description: req.body.description,
         genre: req.body.genre,
-        uploader: req.user.username
+        uploader: req.user.username,
+        id: req.body._id
       })
+      console.log(newBook)
       this.sendWebHookToSubscribers(newBook)
       res
         .status(201)
@@ -223,18 +232,25 @@ export class BookController {
     try {
       let search = req.params.search
       search = search.charAt(0).toUpperCase() + search.slice(1)
-      const allBooksByGenre = {
-        books: (await Book.find({ genre: search })).map(book => ({
-          title: book.title,
-          author: book.author,
-          description: book.description,
-          genre: book.genre,
-          id: book.id // -------------EV använda annat ID----------
-        }))
+      const result = {
+        _links: {
+          self: { href: process.env.API_URL + '/books/genre/' + search.toLowerCase() },
+          specific: { href: process.env.API_URL + '/books/book/{id}' },
+          all: { href: process.env.API_URL + '/books' }
+        },
+        allBooksByGenre: {
+          books: (await Book.find({ genre: search })).map(book => ({
+            title: book.title,
+            author: book.author,
+            description: book.description,
+            genre: book.genre,
+            id: book.id // -------------EV använda annat ID----------
+          }))
+        }
       }
       res
         .status(200)
-        .json(allBooksByGenre)
+        .json(result)
     } catch (error) {
       next(error)
     }

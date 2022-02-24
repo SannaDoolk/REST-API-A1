@@ -41,8 +41,4 @@ const authenticateJWT = (req, res, next) => {
   }
 }
 
-router.get('/subscribers', (req, res, next) => hookController.getAllSubs(req, res, next))
-router.delete('/subscribers/:id', (req, res, next) => hookController.delete(req, res, next))
-
-// ENDAST DENNA SKA VARA KVAR -----------------------------------------
 router.post('/', authenticateJWT, (req, res, next) => hookController.subscribeForNewBooks(req, res, next))

@@ -135,8 +135,8 @@ export class MemberAccountController {
       const result = {
         _links: {
           self: { href: process.env.API_URL + '/user/' + username + '/uploaded-books' },
-          book: { href: process.env.API_URL + '/books/book/:id' },
-          uploader: { href: process.env.API_URL + '/user/sanna3' },
+          book: { href: process.env.API_URL + '/books/book/{id}' },
+          uploader: { href: process.env.API_URL + '/user/' + username },
           all: { href: process.env.API_URL + '/books' }
         },
         books: booksFromUser

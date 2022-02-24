@@ -45,14 +45,12 @@ router.param('id', (req, res, next, id) => bookController.loadBookOnReqObj(req, 
 
 router.get('/', (req, res, next) => bookController.getAllBooks(req, res, next))
 
-// VERIFY
 router.post('/book', authenticateJWT, (req, res, next) => bookController.postNewBook(req, res, next))
 
 router.get('/book/:id', (req, res, next) => bookController.getBookById(req, res, next))
 
-// VERIFY
 router.put('/book/:id', authenticateJWT, (req, res, next) => bookController.putUpdateOnBook(req, res, next))
-// VERIFY
+
 router.delete('/book/:id', authenticateJWT, (req, res, next) => bookController.deleteBook(req, res, next))
 
 router.get('/genre/:search', (req, res, next) => bookController.getBooksByGenre(req, res, next))

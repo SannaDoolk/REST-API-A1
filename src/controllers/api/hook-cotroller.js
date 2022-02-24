@@ -40,27 +40,4 @@ export class HookController {
       next(err)
     }
   }
-
-  // TEST -------------------------
-  async getAllSubs(req, res, next) {
-    try {
-      const allSubs = {
-        subs: (await Subscriber.find({})).map(subscriber => ({
-          sub: subscriber.url,
-          id: subscriber._id
-        }))
-      }
-      res
-        .status(201)
-        .json(allSubs)
-    } catch (error) {
-      next(error)
-    }
-  }
-
-    // TEST -------------------------
-  async delete (req, res, next) {
-    await Subscriber.deleteOne({ _id: req.params.id })
-  }
-
 }
