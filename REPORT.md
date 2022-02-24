@@ -3,6 +3,7 @@
 I have tried to implement HATEOAS according to the HAL media type. I've choosen HAL because HATEOAS is new to me and it seemed easy to understand. I have an object called "_links" in my json response and contains a href to "self", pointing to the link you're currently watching. It also contains links to other resources that are related to the self url, and the point of this is to make it easier to browse around in the api. I think this aproach is pretty straight forward and easy to understand.  
 
 2. If your solution should implement multiple representations of the resources. How would you do it?
+
 I think I could have added code in my controller in the project to send the respons in different representation such as json and xml for example, and by that make it possible for a user to  get the respons in the content-type they choose in their request. 
 
 3. Motivate and defend your authentication solution.
@@ -19,10 +20,13 @@ Sources: https://fusionauth.io/learn/expert-advice/tokens/pros-and-cons-of-jwts,
 
 4. Explain how your webhook works.
 
-1. The user sends an URL by their choice along with a secret by a POST to /api/library/subscribe in json to get noted every time a new book is posted to the API. The user has to be logged in to do this.
-2. The URL and secret provided by the user is saved in the Database as a Subscriber.
-3. Every time a user posts a new book to the Database a POST request will be sent to every URL in the list of Subscribers in the database. Their saved secret will be sent in the request as ’private-token’ to make the request safer for the subscriber receiving the webhook. 
-4. The subscriber will get information in json about the title, author, genre and description of the new book posted.
+a) The user sends an URL by their choice along with a secret by a POST to /api/library/subscribe in json to get noted every time a new book is posted to the API. The user has to be logged in to do this.
+
+b) The URL and secret provided by the user is saved in the Database as a Subscriber.
+
+c) Every time a user posts a new book to the Database a POST request will be sent to every URL in the list of Subscribers in the database. Their saved secret will be sent in the request as ’private-token’ to make the request safer for the subscriber receiving the webhook. 
+
+d) The subscriber will get information in json about the title, author, genre and description of the new book posted.
 
 
 5. Since this is your first own web API, there are probably things you would solve in another way, looking back at this assignment. Write your thoughts about this.
