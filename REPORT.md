@@ -33,7 +33,11 @@ d) The subscriber will get information in json about the title, author, genre an
 
 5. Since this is your first own web API, there are probably things you would solve in another way, looking back at this assignment. Write your thoughts about this.
 
-My HATEOAS implementation could be better and more detailed, for example showing what kind of http method is used in a better way and other information that could be useful to the user. It would also probably been a good idea to implement refresh tokens for the jwt. It would probably been better to use another way to identify items instead of using Mongodb _id since this causes some problems when trying to reach a resource that does not exsist. 
+My HATEOAS implementation could be better and more detailed, for example showing what kind of http method is used in a better way and other information that could be useful to the user. I think it was a little bit hard to find information on how to implement HATEOAS in a good way in javascript and express.
+
+It would also probably been a good idea to implement refresh tokens for the jwt. It would probably been better to use another way to identify items instead of using Mongodb _id since this causes some problems when trying to reach a resource that does not exsist. 
+
+I could have implemented more design rules. 
 
 6. Which "linguistic design rules" have you implemented? List them here and motivate "for each" of them very briefly why you choose them? Remember that you must consider "at least" FIVE "linguistic design rules" as the linguistic quality of your API.
 
